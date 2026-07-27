@@ -1,0 +1,288 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f5f7fb;
+}
+
+/* App */
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+
+.header {
+  height: 70px;
+
+  background: white;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 0 25px;
+
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  font-size: 24px;
+
+  font-weight: bold;
+}
+
+.logo span {
+  color: #3b82f6;
+}
+
+.header-icons {
+  display: flex;
+
+  gap: 12px;
+}
+
+.header-icons button {
+  width: 40px;
+
+  height: 40px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  background: #f0f2f5;
+
+  transition: 0.3s;
+}
+
+.header-icons button:hover {
+  background: #3b82f6;
+
+  color: white;
+}
+
+/* Main */
+
+.main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+/* Sidebar */
+
+.sidebar {
+  width: 260px;
+
+  background: white;
+
+  border-right: 1px solid #ddd;
+
+  padding: 20px;
+}
+
+.new-chat {
+  width: 100%;
+
+  padding: 14px;
+
+  border: none;
+
+  background: #3b82f6;
+
+  color: white;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  margin-bottom: 25px;
+}
+
+.sidebar h4 {
+  margin-bottom: 15px;
+
+  color: #666;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  padding: 12px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  margin-bottom: 10px;
+
+  transition: 0.3s;
+}
+
+.sidebar li:hover {
+  background: #eef4ff;
+}
+
+/* Chat */
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Welcome */
+
+.welcome {
+  text-align: center;
+
+  padding: 35px;
+}
+
+.welcome h1 {
+  color: #3b82f6;
+
+  margin-bottom: 12px;
+}
+
+.welcome p {
+  color: #777;
+}
+
+/* Messages */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 25px;
+}
+.message {
+  max-width: 70%;
+
+  padding: 15px;
+
+  border-radius: 15px;
+
+  margin-bottom: 18px;
+
+  line-height: 1.6;
+}
+
+.bot {
+  background: white;
+
+  border: 1px solid #ddd;
+}
+
+.user {
+  background: #3b82f6;
+
+  color: white;
+
+  margin-left: auto;
+}
+
+/* Input */
+
+.input-area {
+  background: white;
+
+  padding: 18px;
+
+  display: flex;
+
+  gap: 10px;
+
+  border-top: 1px solid #ddd;
+}
+
+.input-area input {
+  flex: 1;
+
+  padding: 14px;
+
+  border-radius: 10px;
+
+  border: 1px solid #ccc;
+
+  outline: none;
+
+  font-size: 16px;
+}
+
+.input-area button {
+  width: 45px;
+
+  height: 45px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #eef2f5;
+
+  cursor: pointer;
+
+  font-size: 18px;
+}
+
+.send {
+  background: #3b82f6 !important;
+
+  color: white;
+}
+/* ================= DARK THEME ================= */
+
+.app.dark {
+  background: #111827;
+  color: white;
+}
+
+.app.dark body {
+  background: #111827;
+}
+/* Responsive */
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .header {
+    padding: 0 15px;
+  }
+
+  .logo span {
+    display: none;
+  }
+}
