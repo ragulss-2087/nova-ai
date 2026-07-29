@@ -1,58 +1,45 @@
 .input-container {
-  height: 80px;
-
+  min-height: 80px;
   background: #ffffff;
-
   border-top: 1px solid #e5e7eb;
-
   display: flex;
-
   align-items: center;
-
   gap: 12px;
-
-  padding: 0 20px;
+  padding: 12px 20px;
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
 }
 
 .input-container input {
   flex: 1;
-
+  min-width: 0;
   height: 50px;
-
   padding: 0 18px;
-
   border: 1px solid #d1d5db;
-
   border-radius: 25px;
-
   outline: none;
-
   font-size: 16px;
-
   transition: 0.3s;
 }
 
 .input-container input:focus {
   border-color: #2563eb;
-
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
+/* ================= BUTTONS ================= */
+
 .tool-btn {
   width: 45px;
-
   height: 45px;
-
+  flex-shrink: 0;
   border: none;
-
   border-radius: 50%;
-
   background: #f3f4f6;
-
   cursor: pointer;
-
   font-size: 20px;
-
   transition: 0.3s;
 }
 
@@ -62,35 +49,46 @@
 
 .send-btn {
   width: 50px;
-
   height: 50px;
-
+  flex-shrink: 0;
   border: none;
-
   border-radius: 50%;
-
   background: #2563eb;
-
   color: white;
-
   cursor: pointer;
-
   font-size: 20px;
-
   transition: 0.3s;
 }
 
 .send-btn:hover {
   transform: scale(1.08);
-
   background: #1d4ed8;
 }
+
+.send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ================= IMAGE ================= */
+
 .selected-image {
-  margin-top: 8px;
+  padding: 8px 16px;
   color: #2563eb;
   font-size: 14px;
+  word-break: break-word;
 }
-/* Dark Input */
+
+/* ================= EMOJI PICKER ================= */
+
+.emoji-picker {
+  position: absolute;
+  bottom: 90px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* ================= DARK MODE ================= */
 
 .app.dark .input-container {
   background: #1f2937;
@@ -107,31 +105,77 @@
   background: #374151;
   color: white;
 }
-.emoji-picker {
-  position: absolute;
-  bottom: 90px;
-  right: 90px;
-  z-index: 1000;
+
+.app.dark .send-btn {
+  background: #2563eb;
 }
-.input-container {
-  flex-shrink: 0;
-}
+
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 768px) {
   .input-container {
-    padding: 0 10px;
-
+    padding: 10px;
     gap: 8px;
+  }
+
+  .input-container input {
+    height: 45px;
+    font-size: 15px;
+    padding: 0 14px;
   }
 
   .tool-btn {
     width: 40px;
-
     height: 40px;
+    font-size: 18px;
   }
 
   .send-btn {
     width: 45px;
-
     height: 45px;
+    font-size: 18px;
+  }
+
+  .emoji-picker {
+    right: 10px;
+    bottom: 80px;
+    transform: scale(0.9);
+    transform-origin: bottom right;
+  }
+
+  .selected-image {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-container {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .tool-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .send-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .input-container input {
+    height: 42px;
+    font-size: 14px;
+    padding: 0 12px;
+  }
+
+  .emoji-picker {
+    right: 5px;
+    bottom: 75px;
+    transform: scale(0.8);
   }
 }

@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import Chat from "./components/Chat";
 
 function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [theme, setTheme] = useState("light");
   function toggleTheme() {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
@@ -93,8 +94,16 @@ function App() {
   }
   return (
     <div className={`app ${theme}`}>
-      <Header toggleTheme={toggleTheme} exportChat={exportChat} theme={theme} />
-
+      <Header
+        toggleTheme={toggleTheme}
+        exportChat={exportChat}
+        theme={theme}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
+      {sidebarOpen && (
+        <div className="overlay" onClick={() => setSidebarOpen(false)} />
+      )}
       <div className="main">
         <Sidebar
           chats={chats}
@@ -104,6 +113,8 @@ function App() {
           deleteChat={deleteChat}
           search={search}
           setSearch={setSearch}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
         />
 
         <Chat

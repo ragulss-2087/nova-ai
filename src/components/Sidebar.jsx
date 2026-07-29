@@ -8,10 +8,18 @@ function Sidebar({
   deleteChat,
   search,
   setSearch,
+  sidebarOpen,
+  setSidebarOpen,
 }) {
   return (
-    <aside className="sidebar">
-      <button className="new-chat" onClick={createNewChat}>
+    <aside className={`sidebar ${sidebarOpen ? "show" : ""}`}>
+      <button
+        className="new-chat"
+        onClick={() => {
+          createNewChat();
+          setSidebarOpen(false);
+        }}
+      >
         + New Chat
       </button>
 
@@ -36,7 +44,14 @@ function Sidebar({
               key={chat.id}
               className={`chat-item ${currentChat === index ? "active" : ""}`}
             >
-              <span onClick={() => setCurrentChat(index)}>💬 {chat.title}</span>
+              <span
+                onClick={() => {
+                  setCurrentChat(index);
+                  setSidebarOpen(false);
+                }}
+              >
+                💬 {chat.title}
+              </span>
 
               <button
                 className="delete-btn"
@@ -53,7 +68,7 @@ function Sidebar({
       </div>
 
       {chats.every(
-        (chat) => !chat.title.toLowerCase().includes(search.toLowerCase())
+        (chat) => !chat.title.toLowerCase().includes(search.toLowerCase()),
       ) && <p className="no-results">No chats found</p>}
 
       <div className="profile">

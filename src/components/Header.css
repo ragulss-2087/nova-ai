@@ -27,29 +27,20 @@
   min-width: 0;
 }
 .menu-btn {
+  display: none;
   width: 42px;
-
   height: 42px;
-
   border: none;
-
   border-radius: 10px;
-
   background: #f3f4f6;
-
   cursor: pointer;
-
-  font-size: 18px;
-
+  font-size: 22px;
   transition: 0.3s;
 }
-
 .menu-btn:hover {
   background: #3b82f6;
-
   color: white;
 }
-
 .logo {
   display: flex;
   align-items: center;
@@ -183,6 +174,54 @@
 .app.dark .icon:hover {
   background: #2563eb;
 }
+.desktop-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.mobile-menu {
+  display: none;
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 55px;
+  width: 190px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 999;
+}
+
+.dropdown button {
+  width: 100%;
+  padding: 14px 18px;
+  border: none;
+  background: white;
+  text-align: left;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.dropdown button:hover {
+  background: #f3f4f6;
+}
+
+.app.dark .dropdown {
+  background: #1f2937;
+}
+
+.app.dark .dropdown button {
+  background: #1f2937;
+  color: white;
+}
+
+.app.dark .dropdown button:hover {
+  background: #374151;
+}
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -202,8 +241,13 @@
     opacity: 1;
   }
 }
-
 @media (max-width: 768px) {
+  .menu-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .logo h2 {
     font-size: 18px;
   }
@@ -212,11 +256,32 @@
     display: none;
   }
 
+  .logo-circle {
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+  }
+
   .header {
-    padding: 0 15px;
+    padding: 0 12px;
+    height: 65px;
   }
 
   .header-right {
-    gap: 8px;
+    gap: 6px;
+  }
+
+  .icon {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .desktop-icons {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: block;
   }
 }

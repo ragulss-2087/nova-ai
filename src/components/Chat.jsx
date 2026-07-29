@@ -40,9 +40,11 @@ function Chat({ chats, setChats, currentChat }) {
     });
   }
   async function sendMessage() {
+    if (!message.trim() && !image) return;
+
     if (loading) return;
 
-    const userMessage = message || "📷 Image";
+    const userMessage = message.trim() || "📷 Image";
 
     setChats((prevChats) => {
       const updatedChats = [...prevChats];
@@ -213,193 +215,192 @@ function Chat({ chats, setChats, currentChat }) {
   return (
     <section className="chat">
       {/* Welcome */}
-      {messages.length === 1 && (
-        <div className="welcome">
-          <div className="bot-logo">🤖</div>
+      <div className="messages">
+        {messages.length === 1 ? (
+          <div className="welcome">
+            <div className="bot-logo">🤖</div>
 
-          <h1>Welcome to Nova AI</h1>
+            <h1>Welcome to Nova AI</h1>
 
-          <p>
-            Your intelligent AI assistant. Ask questions, generate code, learn
-            something new, or solve problems.
-          </p>
+            <p>
+              Your intelligent AI assistant. Ask questions, generate code, learn
+              something new, or solve problems.
+            </p>
 
-          <div className="suggestions">
-            <div className="card">
-              💻
-              <h3>Generate Code</h3>
-              <p>React, HTML, CSS, JavaScript</p>
-            </div>
+            <div className="suggestions">
+              <div className="card">
+                💻
+                <h3>Generate Code</h3>
+                <p>React, HTML, CSS, JavaScript</p>
+              </div>
 
-            <div className="card">
-              📄
-              <h3>Summarize</h3>
-              <p>Documents & Articles</p>
-            </div>
+              <div className="card">
+                📄
+                <h3>Summarize</h3>
+                <p>Documents & Articles</p>
+              </div>
 
-            <div className="card">
-              🌐
-              <h3>Translate</h3>
-              <p>Multiple Languages</p>
-            </div>
+              <div className="card">
+                🌐
+                <h3>Translate</h3>
+                <p>Multiple Languages</p>
+              </div>
 
-            <div className="card">
-              💡
-              <h3>Ideas</h3>
-              <p>Brainstorm Anything</p>
+              <div className="card">
+                💡
+                <h3>Ideas</h3>
+                <p>Brainstorm Anything</p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <>
+            {messages.map((msg, index) => (
+              <div key={index} className={`message ${msg.sender}`}>
+                {msg.sender === "bot" && <div className="avatar">🤖</div>}
 
-      {/* Messages */}
-      {messages.length > 1 && (
-        <div className="messages">
-          {messages.map((msg, index) => (
-            <div key={index} className={`message ${msg.sender}`}>
-              {msg.sender === "bot" && <div className="avatar">🤖</div>}
+                <div className="bubble-container">
+                  <div className="bubble">
+                    {editingIndex === index ? (
+                      <>
+                        <textarea
+                          className="edit-input"
+                          value={editedText}
+                          onChange={(e) => setEditedText(e.target.value)}
+                        />
 
-              <div className="bubble-container">
-                <div className="bubble">
-                  {editingIndex === index ? (
-                    <>
-                      <textarea
-                        className="edit-input"
-                        value={editedText}
-                        onChange={(e) => setEditedText(e.target.value)}
-                      />
+                        <div className="edit-actions">
+                          <button
+                            onClick={() => {
+                              setChats((prev) =>
+                                prev.map((chat, i) => {
+                                  if (i !== currentChat) return chat;
 
-                      <div className="edit-actions">
-                        <button
-                          onClick={() => {
-                            setChats((prev) =>
-                              prev.map((chat, i) => {
-                                if (i !== currentChat) return chat;
+                                  const msgs = [...chat.messages];
+                                  msgs[index] = {
+                                    ...msgs[index],
+                                    text: editedText,
+                                  };
 
-                                const msgs = [...chat.messages];
-                                msgs[index] = {
-                                  ...msgs[index],
-                                  text: editedText,
-                                };
+                                  return {
+                                    ...chat,
+                                    messages: msgs,
+                                  };
+                                }),
+                              );
+                              setEditingIndex(null);
+                            }}
+                          >
+                            Save
+                          </button>
 
-                                return {
-                                  ...chat,
-                                  messages: msgs,
-                                };
-                              }),
+                          <button onClick={() => setEditingIndex(null)}>
+                            Cancel
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          code({ inline, className, children, ...props }) {
+                            const match = /language-(\w+)/.exec(
+                              className || "",
                             );
-                            setEditingIndex(null);
-                          }}
-                        >
-                          Save
-                        </button>
+                            const code = String(children).replace(/\n$/, "");
 
-                        <button onClick={() => setEditingIndex(null)}>
-                          Cancel
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <ReactMarkdown
-                      remarkPlugins={[remarkGfm]}
-                      components={{
-                        code({ inline, className, children, ...props }) {
-                          const match = /language-(\w+)/.exec(className || "");
-                          const code = String(children).replace(/\n$/, "");
+                            if (!inline && match) {
+                              return (
+                                <div style={{ position: "relative" }}>
+                                  <button
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(code);
+                                      setCopied(code);
 
-                          if (!inline && match) {
+                                      setTimeout(() => {
+                                        setCopied("");
+                                      }, 2000);
+                                    }}
+                                    style={{
+                                      position: "absolute",
+                                      right: "10px",
+                                      top: "10px",
+                                      padding: "6px 10px",
+                                      borderRadius: "6px",
+                                      border: "none",
+                                      cursor: "pointer",
+                                      background: "#333",
+                                      color: "#fff",
+                                      fontSize: "12px",
+                                    }}
+                                  >
+                                    {copied === code ? "Copied!" : "Copy"}
+                                  </button>
+
+                                  <SyntaxHighlighter
+                                    language={match[1]}
+                                    style={oneDark}
+                                    PreTag="div"
+                                    {...props}
+                                  >
+                                    {code}
+                                  </SyntaxHighlighter>
+                                </div>
+                              );
+                            }
+
                             return (
-                              <div style={{ position: "relative" }}>
-                                <button
-                                  onClick={() => {
-                                    navigator.clipboard.writeText(code);
-                                    setCopied(code);
-
-                                    setTimeout(() => {
-                                      setCopied("");
-                                    }, 2000);
-                                  }}
-                                  style={{
-                                    position: "absolute",
-                                    right: "10px",
-                                    top: "10px",
-                                    padding: "6px 10px",
-                                    borderRadius: "6px",
-                                    border: "none",
-                                    cursor: "pointer",
-                                    background: "#333",
-                                    color: "#fff",
-                                    fontSize: "12px",
-                                  }}
-                                >
-                                  {copied === code ? "Copied!" : "Copy"}
-                                </button>
-
-                                <SyntaxHighlighter
-                                  language={match[1]}
-                                  style={oneDark}
-                                  PreTag="div"
-                                  {...props}
-                                >
-                                  {code}
-                                </SyntaxHighlighter>
-                              </div>
+                              <code className={className} {...props}>
+                                {children}
+                              </code>
                             );
-                          }
+                          },
+                        }}
+                      >
+                        {msg.text}
+                      </ReactMarkdown>
+                    )}
+                  </div>
 
-                          return (
-                            <code className={className} {...props}>
-                              {children}
-                            </code>
-                          );
-                        },
-                      }}
+                  {msg.sender === "bot" && (
+                    <button
+                      className="copy-btn"
+                      onClick={() => copyMessage(msg.text, index)}
                     >
-                      {msg.text}
-                    </ReactMarkdown>
+                      {copiedIndex === index ? <FiCheck /> : <FiCopy />}
+                    </button>
                   )}
                 </div>
 
-                {msg.sender === "bot" && (
-                  <button
-                    className="copy-btn"
-                    onClick={() => copyMessage(msg.text, index)}
-                  >
-                    {copiedIndex === index ? <FiCheck /> : <FiCopy />}
-                  </button>
+                {msg.sender === "user" && (
+                  <>
+                    <button
+                      className="edit-btn"
+                      onClick={() => {
+                        setEditingIndex(index);
+                        setEditedText(msg.text);
+                      }}
+                    >
+                      ✏️
+                    </button>
+
+                    <div className="avatar">👤</div>
+                  </>
                 )}
               </div>
+            ))}
 
-              {msg.sender === "user" && (
-                <>
-                  <button
-                    className="edit-btn"
-                    onClick={() => {
-                      setEditingIndex(index);
-                      setEditedText(msg.text);
-                    }}
-                  >
-                    ✏️
-                  </button>
+            {loading && (
+              <div className="message bot">
+                <div className="avatar">🤖</div>
+                <div className="bubble">Typing...</div>
+              </div>
+            )}
 
-                  <div className="avatar">👤</div>
-                </>
-              )}
-            </div>
-          ))}
-
-          {/* Typing Indicator */}
-          {loading && (
-            <div className="message bot">
-              <div className="avatar">🤖</div>
-
-              <div className="bubble">Typing...</div>
-            </div>
-          )}
-
-          <div ref={bottomRef}></div>
-        </div>
-      )}
+            <div ref={bottomRef}></div>
+          </>
+        )}
+      </div>
 
       <InputBox
         message={message}

@@ -215,6 +215,17 @@
 }
 @media (max-width: 768px) {
   .sidebar {
-    display: none;
+    position: fixed;
+    left: -300px;
+    top: 75px;
+    width: 280px;
+    height: calc(100vh - 75px);
+    z-index: 999;
+    transition: left 0.3s ease;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar.show {
+    left: 0;
   }
 }
