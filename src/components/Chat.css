@@ -344,7 +344,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .suggestions {
     grid-template-columns: 1fr;
   }
